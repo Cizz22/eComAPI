@@ -31,14 +31,14 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
-// router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
-//   try {
-//     await User.findByIdAndDelete(req.params.id);
-//     res.status(200).json("Cart deleted");
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// });
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    await Cart.findByIdAndDelete(req.params.id);
+    res.status(200).json("Cart deleted");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 // router.get("/find/:id", async (req, res) => {
 //   try {
