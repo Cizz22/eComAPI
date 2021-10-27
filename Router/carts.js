@@ -41,33 +41,23 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 
-router.get("/find/:userid", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
-    const cart = await Cart.findOne({userId:req.params.userid});
+    const cart = await Cart.findOne({userId:req.params.id});
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-// router.get("/", async (req, res) => {
-//   const qNew = req.query.new;
-//   const qCategory = req.query.category;
-//   try {
-//     const Carts = qNew
-//       ? await Cart.find().sort({ createdAt: -1 }).limit(5)
-//       : qCategory
-//       ? await Cart.find({
-//           categories: {
-//             $in: [qCategory],
-//           },
-//         })
-//       : await Cart.find();
-    
-//     res.status(200).json(Carts)
-//   } catch (error) {
-//       res.json(500).json(error)
-//   }
-// });
+router.get("/", verifyTokenAndAdmin , async (req, res) => {
+  
+  try {
+    const carts = await new Cart.find()
+    res.status(200).json(carts)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+});
 
 module.exports = router;
