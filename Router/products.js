@@ -15,7 +15,6 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -77,18 +76,21 @@ router.get("/find/:id", async (req, res) => {
 router.get("/", async (req, res) => {
   const qNew = req.query.new;
   const qCategory = req.query.category;
-//   try {
-//       let products;
-
-      
-//     const products = query
-//       ? await User.find().sort({ _id: -1 }).limit(5)
-//       : await User.find();
-
-//     res.status(200).json(users);
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
+  try {
+    const products = qNew
+      ? await Product.find().sort({ createdAt: -1 }).limit(5)
+      : qCategory
+      ? await Product.find({
+          categories: {
+            $in: [qCategory],
+          },
+        })
+      : await Product.find();
+    
+    res.status(200).json(products)
+  } catch (error) {
+      res.json(500).json(error)
+  }
 });
 
 module.exports = router;
