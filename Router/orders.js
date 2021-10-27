@@ -51,7 +51,7 @@ router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
 
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const orders = await new Order.find();
+    const orders = await Order.find();
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json(error);
@@ -80,31 +80,6 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
       },
     ]);
   } catch (error) {}
-});
-
-router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
-  const date = new Date();
-  const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
-  try {
-    const data = await User.aggregate([
-      { $match: { createdAt: { $gte: lastYear } } },
-      {
-        $project: {
-          month: { $month: "$createdAt" },
-        },
-      },
-      {
-        $group: {
-          _id: "$month",
-          total: { $sum: 1 },
-        },
-      },
-    ]);
-
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(500).json(error);
-  }
 });
 
 module.exports = router;

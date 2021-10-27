@@ -11,6 +11,7 @@ const userRoute = require("./Router/users");
 const authRoute = require("./Router/auth");
 const productRoute = require("./Router/products")
 const cartRoute = require("./Router/carts")
+const orderRoute = require("./Router/orders")
 
 //Db connect
 connect(`${process.env.MONGO_DB}`)
@@ -26,4 +27,5 @@ app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/products", productRoute);
 app.use("/api/carts", cartRoute)
+app.use("/api/orders", orderRoute)
 
