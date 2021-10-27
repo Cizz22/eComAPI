@@ -19,7 +19,7 @@ router.post(
     try {
       const savedUser = await newUser.save();
 
-      const {password:pass, ...data} = savedUser._doc
+      const { password: pass, ...data } = savedUser._doc;
       res.status(201).json(data);
     } catch (error) {
       res.status(500).json({

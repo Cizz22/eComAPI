@@ -1,9 +1,6 @@
 const router = require("express").Router();
 const Product = require("../Model/Product");
-const {
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
-} = require("./verifyToken");
+const { verifyTokenAndAdmin } = require("./verifyToken");
 
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
   const newProduct = new Product(req.body);
@@ -61,10 +58,10 @@ router.get("/", async (req, res) => {
           },
         })
       : await Product.find();
-    
-    res.status(200).json(products)
+
+    res.status(200).json(products);
   } catch (error) {
-      res.json(500).json(error)
+    res.json(500).json(error);
   }
 });
 

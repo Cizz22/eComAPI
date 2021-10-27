@@ -40,23 +40,21 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
-
 router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
-    const cart = await Cart.findOne({userId:req.params.id});
+    const cart = await Cart.findOne({ userId: req.params.id });
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-router.get("/", verifyTokenAndAdmin , async (req, res) => {
-  
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const carts = await new Cart.find()
-    res.status(200).json(carts)
+    const carts = await new Cart.find();
+    res.status(200).json(carts);
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
 });
 

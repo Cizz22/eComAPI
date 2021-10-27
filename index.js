@@ -5,13 +5,12 @@ const app = express();
 dotenv.config();
 app.use(express.json());
 
-
 //Router
 const userRoute = require("./Router/users");
 const authRoute = require("./Router/auth");
-const productRoute = require("./Router/products")
-const cartRoute = require("./Router/carts")
-const orderRoute = require("./Router/orders")
+const productRoute = require("./Router/products");
+const cartRoute = require("./Router/carts");
+const orderRoute = require("./Router/orders");
 
 //Db connect
 connect(`${process.env.MONGO_DB}`)
@@ -26,6 +25,5 @@ app.listen(process.env.PORT || 5000, () => {
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/products", productRoute);
-app.use("/api/carts", cartRoute)
-app.use("/api/orders", orderRoute)
-
+app.use("/api/carts", cartRoute);
+app.use("/api/orders", orderRoute);

@@ -69,7 +69,7 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
       {
         $project: {
           month: { $month: "$createdAt" },
-          sales: "$amount"
+          sales: "$amount",
         },
       },
       {
@@ -80,9 +80,9 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
       },
     ]);
 
-    res.status(200).json(income)
+    res.status(200).json(income);
   } catch (error) {
-      res.status(500).json(error)
+    res.status(500).json(error);
   }
 });
 

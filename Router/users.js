@@ -64,7 +64,6 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-
 router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -87,6 +86,5 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
     res.status(500).json(error);
   }
 });
-
 
 module.exports = router;
