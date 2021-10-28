@@ -10,31 +10,28 @@ const {
 router.post("/", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const newOrder = await new Order(req.body).save();
-    
+
     const payLoad = {
       transaction_details: {
         order_id: newOrder._id,
         gross_amount: req.body.amount,
       },
-      customer_details: {
-        first_name: req.body.userId,
-      },
     };
 
-    const option = {
-      method: "post",
-      url: "https://app.sandbox.midtrans.com/snap/v1/transactions",
-      auth: {
-        username: `${process.env.MIDTRANS_SERVER_KEY}`,
-        password: ""
-      },
-      data: payLoad,
-    };
-    const token = await axios(option);
+    const token = await axios.post(
+      "https://app.sandbox.midtrans.com/snap/v1/transactions",
+      payLoad,
+      {
+        auth: {
+          username: `SB-Mid-server-ShPS02fGEF1ntmr2SP2vH-5G`,
+          password: "",
+        },
+      }
+    );
 
-    res.status(201).json(token);
+    res.status(201).json({ ...newOrder._doc, ...token });
   } catch (error) {
-    res.status(500).json(error);
+    res.json(error);
   }
 });
 
