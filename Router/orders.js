@@ -1,11 +1,17 @@
 const router = require("express").Router();
 const Order = require("../Model/Order");
-const axios = require("axios");
+const midtransClient = require("midtrans-client");
 const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
   verifyToken,
 } = require("./verifyToken");
+
+const snap = new midtransClient.Snap({
+  isProduction: false,
+  serverKey: `${process.env.MIDTRANS_SERVER_KEY}`,
+  clientKey: `${process.env.MIDTRANS_CLIENT_KEY}`,
+});
 
 router.post("/", verifyTokenAndAuthorization, async (req, res) => {
   try {
@@ -18,20 +24,19 @@ router.post("/", verifyTokenAndAuthorization, async (req, res) => {
       },
     };
 
-    const token = await axios.post(
-      "https://app.sandbox.midtrans.com/snap/v1/transactions",
-      payLoad,
+    const token = await snap.createTransactionToken(payLoad);
+    const updatedOrder = await Order.findByIdAndUpdate(
+      newOrder._id,
       {
-        auth: {
-          username: `SB-Mid-server-ShPS02fGEF1ntmr2SP2vH-5G`,
-          password: "",
+        $set: {
+          token,
         },
-      }
+      },
+      { new: true }
     );
-
-    res.status(201).json({ ...newOrder._doc, ...token });
+    res.status(201).json(updatedOrder);
   } catch (error) {
-    res.json(error);
+    res.status(500).json(error);
   }
 });
 
