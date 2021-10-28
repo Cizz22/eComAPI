@@ -29,6 +29,9 @@ const orderSchema = new Schema(
       type: String,
       default: "pending",
     },
+    token:{
+      type: String,
+    }
   },
   { timestamps: true }
 );
